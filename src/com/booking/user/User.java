@@ -7,8 +7,8 @@ public class User {
     private UUID id;
     private String name;
 
-    public User( String name) {
-        this.id = new UUID(12,11);
+    public User( UUID id,String name) {
+        this.id = id;
         this.name = name;
     }
 
