@@ -11,7 +11,7 @@ public class CarService {
                 return car;
             }
         }
-        throw new IllegalStateException((String.format("Car with reg %s not found", regNumber)));
+        throw new IllegalStateException((String.format("Car with registration number %s is not found", regNumber)));
     }
     public Car[] getAllElectricCars() {
         int electricCarsCount = 0;

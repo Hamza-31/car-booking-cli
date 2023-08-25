@@ -8,7 +8,7 @@ public class User {
     private String name;
 
     public User( String name) {
-        this.id = new UUID(122,11);
+        this.id = new UUID(12,11);
         this.name = name;
     }
 
