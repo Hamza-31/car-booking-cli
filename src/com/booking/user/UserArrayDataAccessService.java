@@ -1,8 +1,9 @@
 package com.booking.user;
 
+import java.io.File;
 import java.util.UUID;
 
-public class UserDAO {
+public class UserArrayDataAccessService implements UserDao {
     private static final User[] users;
     static {
         users = new User[]{
@@ -10,8 +11,10 @@ public class UserDAO {
                 new User(UUID.fromString("b10d126a-3608-4980-9f9c-aa179f5cebc3"),"Nissrine")
         };
     }
-    public User[] getUsers(){
+
+
+    @Override
+    public User[] getUsers() {
         return users;
     }
-
 }

@@ -3,8 +3,9 @@ package com.booking.user;
 import java.util.UUID;
 
 public class UserService {
-    private UserDAO userDAO = new UserDAO();
+    private UserFileDataAccessService userDAO = new UserFileDataAccessService();
     public User[] getUsers(){
+
         return userDAO.getUsers();
     }
     public User getUserById(UUID id){
