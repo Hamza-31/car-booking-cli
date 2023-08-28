@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class UserService {
     private UserFileDataAccessService userDAO = new UserFileDataAccessService();
+
     public User[] getUsers(){
 
         return userDAO.getUsers();

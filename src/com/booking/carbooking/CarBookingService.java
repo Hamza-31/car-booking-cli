@@ -8,8 +8,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class CarBookingService {
-    private final CarBookingDAO carBookingDAO = new CarBookingDAO();
-    private final CarService carService = new CarService();
+    private final CarBookingDAO carBookingDAO;
+    private final CarService carService;
+
+    public CarBookingService(CarBookingDAO carBookingDAO, CarService carService) {
+        this.carBookingDAO = carBookingDAO;
+        this.carService = carService;
+    }
+
     private Car[] getCars(Car[] cars){
         if(cars.length == 0){
             return new Car[0];

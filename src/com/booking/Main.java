@@ -2,7 +2,9 @@ package com.booking;
 
 
 import com.booking.car.Car;
+import com.booking.car.CarService;
 import com.booking.carbooking.CarBooking;
+import com.booking.carbooking.CarBookingDAO;
 import com.booking.carbooking.CarBookingService;
 import com.booking.user.User;
 import com.booking.user.UserService;
@@ -15,7 +17,9 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) {
         UserService userService = new UserService();
-        CarBookingService carBookingService = new CarBookingService();
+        CarBookingDAO carBookingDAO= new CarBookingDAO();
+        CarService carService = new CarService();
+        CarBookingService carBookingService = new CarBookingService(carBookingDAO,carService);
 
         Scanner scanner = new Scanner(System.in);
 
