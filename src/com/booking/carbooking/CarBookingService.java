@@ -5,6 +5,9 @@ import com.booking.car.CarService;
 import com.booking.user.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class CarBookingService {
@@ -16,29 +19,16 @@ public class CarBookingService {
         this.carService = carService;
     }
 
-    private Car[] getCars(Car[] cars){
-        if(cars.length == 0){
-            return new Car[0];
+    private List<Car> getCars(List<Car> cars){
+        if(cars.isEmpty()){
+            return Collections.emptyList();
         }
-        CarBooking[] carBookings = carBookingDAO.getCarBookings();
-        if(carBookings.length == 0){
+        List<CarBooking> carBookings = carBookingDAO.getCarBookings();
+        if(carBookings.isEmpty()){
             return cars;
         }
-        int availableCarsCount = 0;
-        for (Car car : cars) {
-            boolean booked = false;
-            for (CarBooking carBooking : carBookings) {
-                if(carBooking == null || !carBooking.getCar().equals(car)){
-                    continue;
-                }
-                booked=true;
-            }
-            if (!booked){
-                ++availableCarsCount;
-            }
-        }
-        Car[] availableCars = new Car[availableCarsCount];
-        int index = 0;
+
+        List<Car> availableCars = new ArrayList<>();
         for (Car car : cars) {
             boolean booked = false;
             for (CarBooking carBooking : carBookings) {
@@ -48,7 +38,7 @@ public class CarBookingService {
                 booked = true;
             }
             if(!booked){
-                availableCars[index++] = car;
+                availableCars.add(car);
             }
 
         }
@@ -56,8 +46,8 @@ public class CarBookingService {
     }
 
     public UUID bookCar(User user, String regNumber){
-    Car[] availableCars = getAvailableCars();
-    if(availableCars.length == 0){
+    List<Car> availableCars = getAvailableCars();
+    if(availableCars.isEmpty()){
         throw new IllegalStateException("No car available for renting.");
     }
         for (Car availableCar : availableCars) {
@@ -72,51 +62,25 @@ public class CarBookingService {
         }
         throw new IllegalStateException(String.format("Car with registration number %s is not found", regNumber));
     }
-    public CarBooking[] getBookings(){
-        CarBooking[] carBookings = carBookingDAO.getCarBookings();
-        int numberOfBookings = 0;
-        for (CarBooking carBooking : carBookings) {
-            if(carBooking != null){
-                ++numberOfBookings;
-            }
-        }
-        if(numberOfBookings==0){
-            return new CarBooking[0];
-        }
-        CarBooking[] bookings = new CarBooking[numberOfBookings];
-        int index = 0;
-        for (CarBooking carBooking : carBookings) {
-            if(carBooking != null){
-                bookings[index++] = carBooking;
-            }
+    public List<CarBooking> getBookings(){
 
-        }
-        return bookings;
+        return carBookingDAO.getCarBookings();
     }
-    public Car[] getUserBookedCars(UUID userId){
-        CarBooking[] carBookings = carBookingDAO.getCarBookings();
-        int numberOfBookingsForUser = 0;
+        public List<Car> getUserBookedCars(UUID userId){
+        List<CarBooking> carBookings = carBookingDAO.getCarBookings();
+        List<Car> userCars = new ArrayList<>();
         for (CarBooking carBooking : carBookings) {
             if(carBooking != null && carBooking.getUser().getId().equals(userId)){
-                ++numberOfBookingsForUser;
+                userCars.add(carBooking.getCar());
             }
         }
-        if(numberOfBookingsForUser == 0){
-            return new Car[0];
-        }
-        Car[] usersCars = new Car[numberOfBookingsForUser];
-        int index = 0;
-        for (CarBooking carBooking : carBookings) {
-            if(carBooking != null && carBooking.getUser().getId().equals(userId)){
-                usersCars[index++] = carBooking.getCar();
-            }
-        }
-        return usersCars;
+
+        return userCars;
     }
-    public Car[] getAvailableCars(){
+    public List<Car> getAvailableCars(){
         return getCars(carService.getAllCars());
     }
-    public Car[] getAvailableElectricCars(){
+    public List<Car> getAvailableElectricCars(){
         return getCars(carService.getAllElectricCars());
     }
 }

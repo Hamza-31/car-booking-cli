@@ -1,8 +1,17 @@
 package com.booking.car;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class CarService {
-    private final CarDAO carDAO = new CarDAO();
-    public Car[] getAllCars(){
+    private final CarDAO carDAO;
+
+    public CarService(CarDAO carDAO) {
+        this.carDAO = carDAO;
+    }
+
+    public List<Car> getAllCars(){
         return carDAO.getCars();
     }
     public Car getCar(String regNumber){
@@ -13,13 +22,13 @@ public class CarService {
         }
         throw new IllegalStateException((String.format("Car with registration number %s is not found", regNumber)));
     }
-    public Car[] getAllElectricCars() {
+    public List<Car> getAllElectricCars() {
         int electricCarsCount = 0;
 
-        Car[] cars = getAllCars();
+        List<Car> cars = getAllCars();
 
-        if (cars.length == 0) {
-            return new Car[0];
+        if (cars.isEmpty()) {
+            return Collections.emptyList();
         }
 
         for (Car car : cars) {
@@ -29,16 +38,17 @@ public class CarService {
         }
 
         if (electricCarsCount == 0) {
-            return new Car[0];
+            return Collections.emptyList();
         }
 
-        Car[] electricCars = new Car[electricCarsCount];
+        List<Car> electricCars = new ArrayList<>();
 
         int index = 0;
 
-        for (int i = 0; i < cars.length; i++) {
-            if (cars[i].isElectric()) {
-                electricCars[index++] = cars[i];
+
+        for (Car car : cars) {
+            if (car.isElectric()) {
+                electricCars.add(car);
             }
         }
 

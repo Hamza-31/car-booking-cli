@@ -2,6 +2,7 @@ package com.booking;
 
 
 import com.booking.car.Car;
+import com.booking.car.CarDAO;
 import com.booking.car.CarService;
 import com.booking.carbooking.CarBooking;
 import com.booking.carbooking.CarBookingDAO;
@@ -11,6 +12,7 @@ import com.booking.user.UserService;
 
 import java.io.File;
 import java.sql.SQLOutput;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -18,7 +20,10 @@ public class Main {
     public static void main(String[] args) {
         UserService userService = new UserService();
         CarBookingDAO carBookingDAO= new CarBookingDAO();
-        CarService carService = new CarService();
+
+        CarDAO carDAO = new CarDAO();
+        CarService carService = new CarService(carDAO);
+
         CarBookingService carBookingService = new CarBookingService(carBookingDAO,carService);
 
         Scanner scanner = new Scanner(System.in);
@@ -48,8 +53,8 @@ public class Main {
 
 
     private static void displayAllBookings(CarBookingService carBookingService){
-        CarBooking[] bookings = carBookingService.getBookings();
-        if(bookings.length == 0){
+        List<CarBooking> bookings = carBookingService.getBookings();
+        if(bookings.isEmpty()){
             System.out.println("No bookings available !");
         return;
         }
@@ -68,8 +73,8 @@ public class Main {
         }
     }
     private static void displayAvailableCars(CarBookingService carBookingService, boolean isElectric) {
-        Car[] availableCars = isElectric ? carBookingService.getAvailableElectricCars() : carBookingService.getAvailableCars();
-        if (availableCars.length == 0) {
+        List<Car> availableCars = isElectric ? carBookingService.getAvailableElectricCars() : carBookingService.getAvailableCars();
+        if (availableCars.isEmpty()) {
             System.out.println("❌ No cars available for renting");
             return;
         }
@@ -92,8 +97,8 @@ public class Main {
             return;
         }
 
-        Car[] userBookedCars = carBookingService.getUserBookedCars(user.getId());
-        if (userBookedCars.length == 0) {
+        List<Car> userBookedCars = carBookingService.getUserBookedCars(user.getId());
+        if (userBookedCars.isEmpty()) {
             System.out.printf("❌ user %s has no cars booked", user);
             return;
         }

@@ -2,26 +2,20 @@ package com.booking.carbooking;
 
 import com.booking.car.CarDAO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CarBookingDAO {
-    private static final CarBooking[] carBookings;
+    private static final List<CarBooking> carBookings;
 
     static {
-        carBookings = new CarBooking[10];
+        carBookings = new ArrayList<CarBooking>();
     }
-    public CarBooking[] getCarBookings(){
+    public List<CarBooking> getCarBookings(){
         return carBookings;
     }
 
     public void book(CarBooking carBooking){
-        int nextFreeIndex = -1;
-        for (int i=0;i<carBookings.length;i++) {
-            if(carBookings[i] == null){
-                nextFreeIndex = i;
-            }
-        }
-        if(nextFreeIndex>-1){
-            carBookings[nextFreeIndex] = carBooking;
-            return;
-        }
+        carBookings.add(carBooking);
     }
 }
