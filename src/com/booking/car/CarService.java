@@ -3,6 +3,7 @@ package com.booking.car;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CarService {
     private final CarDAO carDAO;
@@ -23,34 +24,10 @@ public class CarService {
         throw new IllegalStateException((String.format("Car with registration number %s is not found", regNumber)));
     }
     public List<Car> getAllElectricCars() {
-        int electricCarsCount = 0;
-
-        List<Car> cars = getAllCars();
-
-        if (cars.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        for (Car car : cars) {
-            if (car.isElectric()) {
-                electricCarsCount++;
-            }
-        }
-
-        if (electricCarsCount == 0) {
-            return Collections.emptyList();
-        }
-
-        List<Car> electricCars = new ArrayList<>();
-
-        int index = 0;
-
-
-        for (Car car : cars) {
-            if (car.isElectric()) {
-                electricCars.add(car);
-            }
-        }
+        List<Car> electricCars = getAllCars()
+                .stream()
+                .filter(Car::isElectric)
+                .collect(Collectors.toList());
 
         return electricCars;
     }
