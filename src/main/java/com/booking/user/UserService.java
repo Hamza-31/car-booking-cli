@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class UserService {
-    private UserFileDataAccessService userDAO = new UserFileDataAccessService();
+    private UserFakerDataAccessService userDAO = new UserFakerDataAccessService();
 
     public List<User> getUsers(){
 
