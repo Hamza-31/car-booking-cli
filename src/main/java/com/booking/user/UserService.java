@@ -1,11 +1,12 @@
 package com.booking.user;
 
+import java.util.List;
 import java.util.UUID;
 
 public class UserService {
     private UserFileDataAccessService userDAO = new UserFileDataAccessService();
 
-    public User[] getUsers(){
+    public List<User> getUsers(){
 
         return userDAO.getUsers();
     }

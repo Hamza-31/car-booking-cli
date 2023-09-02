@@ -63,8 +63,8 @@ public class Main {
         }
     }
     private static void displayAllUsers(UserService userService){
-        User[] users = userService.getUsers();
-        if(users.length == 0){
+       List<User> users = userService.getUsers();
+        if(users.isEmpty()){
             System.out.println("No user in the system !");
             return;
         }
